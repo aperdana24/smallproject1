@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life Dashboard</title>
+<meta name="description" content="A simple dashboard to organise your day: clock, focus timer, to-do list and quick links." />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════ TOP BAR ═══════════════ -->
+<header class="topbar">
+  <div class="container bar">
+    <span class="brand">Life<strong>Dashboard</strong></span>
+    <div class="bar-actions">
+      <button id="themeBtn" class="icon-btn" type="button" title="Toggle light / dark" aria-label="Toggle theme">🌙</button>
+      <button id="settingsBtn" class="icon-btn" type="button" title="Settings" aria-label="Open settings">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ═══════════════ HERO: GREETING · CLOCK · WEATHER ═══════════════ -->
+  <section class="hero card">
+    <div class="hero-main">
+      <p class="date" id="date">—</p>
+      <h1 class="greeting" id="greeting">Hello</h1>
+      <p class="clock" id="clock">00:00:00</p>
+    </div>
+
+    <div class="weather" id="weather">
+      <span class="w-icon" id="wIcon">⛅</span>
+      <div>
+        <p class="w-temp" id="wTemp">--°</p>
+        <p class="w-desc" id="wDesc">Loading weather…</p>
+        <p class="w-place" id="wPlace">—</p>
+      </div>
+      <button id="wRefresh" class="icon-btn sm" type="button" title="Refresh weather" aria-label="Refresh weather">⟳</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════ QUOTE ═══════════════ -->
+  <section class="quote card">
+    <blockquote>
+      <p id="quoteText">—</p>
+      <cite id="quoteAuthor">—</cite>
+    </blockquote>
+    <button id="newQuoteBtn" class="btn ghost sm" type="button">New quote</button>
+  </section>
+
+  <!-- ═══════════════ DASHBOARD GRID ═══════════════ -->
+  <div class="grid">
+
+    <!-- ───────── LEFT COLUMN ───────── -->
+    <div class="col">
+
+      <!-- FOCUS TIMER -->
+      <section class="card timer-card">
+        <div class="card-head">
+          <h2>Focus Timer</h2>
+          <span class="pill" id="timerMode">Focus</span>
+        </div>
+
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+            <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="54"></circle>
+          </svg>
+          <div class="ring-text">
+            <p class="time" id="timerTime">25:00</p>
+            <p class="rounds" id="timerRounds">0 rounds today</p>
+          </div>
+        </div>
+
+        <div class="timer-btns">
+          <button id="startBtn" class="btn primary" type="button">Start</button>
+          <button id="stopBtn" class="btn ghost" type="button">Stop</button>
+          <button id="resetBtn" class="btn ghost" type="button">Reset</button>
+        </div>
+
+        <div class="mode-switch">
+          <button class="chip active" data-mode="focus" type="button">Focus</button>
+          <button class="chip" data-mode="break" type="button">Break</button>
+        </div>
+      </section>
+
+      <!-- QUICK LINKS -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Quick Links</h2>
+          <span class="count" id="linkCount">0</span>
+        </div>
+
+        <div class="links" id="links"></div>
+        <p class="empty" id="linksEmpty">No links yet — add your favourites below.</p>
+
+        <form class="link-form" id="linkForm">
+          <input type="text" id="linkLabel" placeholder="Name (e.g. Gmail)" maxlength="24" required />
+          <input type="text" id="linkUrl" placeholder="gmail.com" required />
+          <button class="btn primary sm" type="submit">Add</button>
+        </form>
+      </section>
+
+    </div>
+
+    <!-- ───────── RIGHT COLUMN: TO-DO ───────── -->
+    <section class="card todo-card">
+      <div class="card-head">
+        <h2>To-Do List</h2>
+        <span class="count" id="taskCount">0 / 0</span>
+      </div>
+
+      <!-- Add task -->
+      <form class="task-form" id="taskForm">
+        <input type="text" id="taskInput" placeholder="What needs doing?" maxlength="120" autocomplete="off" required />
+        <select id="taskCategory" aria-label="Category">
+          <option value="Work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Learning">Learning</option>
+        </select>
+        <button class="btn primary" type="submit">Add</button>
+      </form>
+      <p class="warn" id="taskWarn"></p>
+
+      <!-- Progress -->
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <input type="search" id="searchInput" placeholder="Search tasks…" aria-label="Search tasks" />
+        <select id="sortSelect" aria-label="Sort tasks">
+          <option value="created-desc">Newest first</option>
+          <option value="created-asc">Oldest first</option>
+          <option value="alpha">A – Z</option>
+          <option value="active">Unfinished first</option>
+          <option value="category">By category</option>
+        </select>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="chip active" data-filter="all" type="button">All</button>
+        <button class="chip" data-filter="active" type="button">Active</button>
+        <button class="chip" data-filter="done" type="button">Done</button>
+        <button class="chip" data-filter="Work" type="button">Work</button>
+        <button class="chip" data-filter="Personal" type="button">Personal</button>
+        <button class="chip" data-filter="Urgent" type="button">Urgent</button>
+        <button class="chip" data-filter="Learning" type="button">Learning</button>
+      </div>
+
+      <!-- List -->
+      <ul class="tasks" id="tasks"></ul>
+      <p class="empty" id="tasksEmpty">Nothing here yet. Add your first task above. ✨</p>
+
+      <div class="todo-foot">
+        <button id="clearDoneBtn" class="btn ghost sm" type="button">Clear completed</button>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    <span>Built with HTML, CSS &amp; vanilla JavaScript</span>
+    <span>Saved locally in your browser</span>
+  </footer>
+</main>
+
+<!-- ═══════════════ SETTINGS DIALOG ═══════════════ -->
+<dialog id="settingsDialog" class="dialog">
+  <form id="settingsForm" method="dialog">
+    <h2>Settings</h2>
+
+    <label for="setName">Your name</label>
+    <input type="text" id="setName" maxlength="24" placeholder="e.g. Dewa" />
+
+    <div class="two">
+      <div>
+        <label for="setFocus">Focus minutes</label>
+        <input type="number" id="setFocus" min="1" max="180" />
+      </div>
+      <div>
+        <label for="setBreak">Break minutes</label>
+        <input type="number" id="setBreak" min="1" max="60" />
+      </div>
+    </div>
+
+    <label for="setCity">Weather location (city name)</label>
+    <input type="text" id="setCity" placeholder="e.g. Kuala Lumpur" />
+
+    <label class="checkline">
+      <input type="checkbox" id="setSound" /> Play a sound when the timer ends
+    </label>
+
+    <div class="dialog-btns">
+      <button class="btn ghost" value="cancel" type="submit">Cancel</button>
+      <button class="btn primary" id="saveSettings" value="save" type="submit">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="js/app.js"></script>
+</body>
+</html>
